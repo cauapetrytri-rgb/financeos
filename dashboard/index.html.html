@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>FinanceOS Pro — O Painel Financeiro que vai transformar seu negócio</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060709;--bg2:#0c0e15;--bg3:#12151f;--bg4:#191d2b;
+  --border:rgba(255,255,255,0.055);--border2:rgba(255,255,255,0.11);
+  --text:#edf0fc;--muted:#606882;--muted2:#333749;
+  --blue:#4f8ef7;--purple:#7b5ef5;--green:#2ecc8f;--red:#f04f5a;--amber:#f5a623;--teal:#22d3ee;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:2px;}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.5;}
+.orb{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0;}
+.orb-1{width:700px;height:700px;background:var(--blue);top:-200px;left:-200px;opacity:0.09;animation:orb1 22s ease-in-out infinite alternate;}
+.orb-2{width:600px;height:600px;background:var(--purple);bottom:-200px;right:-150px;opacity:0.09;animation:orb2 28s ease-in-out infinite alternate;}
+.orb-3{width:400px;height:400px;background:var(--green);top:40%;left:60%;opacity:0.06;animation:orb3 18s ease-in-out infinite alternate;}
+@keyframes orb1{to{transform:translate(60px,50px)scale(1.1);}}
+@keyframes orb2{to{transform:translate(-50px,40px)scale(1.08);}}
+@keyframes orb3{to{transform:translate(-40px,-30px)scale(1.15);}}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:300;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 6%;border-bottom:1px solid var(--border);backdrop-filter:blur(24px);background:rgba(6,7,9,0.75);}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;cursor:pointer;}
+.nav-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--blue),var(--purple));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 0 20px rgba(79,142,247,0.3);}
+.nav-name{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;letter-spacing:-0.3px;}
+.nav-name span{color:var(--blue);}
+.nav-actions{display:flex;align-items:center;gap:10px;}
+.nav-login{background:transparent;border:1px solid var(--border2);border-radius:9px;padding:8px 18px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.nav-login:hover{background:var(--bg3);}
+.nav-buy{background:linear-gradient(135deg,var(--blue),var(--purple));border:none;border-radius:9px;padding:9px 20px;color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 20px rgba(79,142,247,0.25);}
+.nav-buy:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(79,142,247,0.35);}
+/* logged in nav */
+.nav-user{display:none;align-items:center;gap:10px;}
+.nav-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--purple));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;cursor:pointer;}
+.nav-user-name{font-size:13px;font-weight:600;color:var(--text);}
+.nav-sair{background:transparent;border:none;color:var(--muted);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;padding:6px;}
+.nav-sair:hover{color:var(--red);}
+
+/* ── PAGES ── */
+.page{display:none;position:relative;z-index:1;}
+.page.active{display:block;}
+
+/* ══════════════════════════
+   LANDING PAGE
+══════════════════════════ */
+.hero{padding:140px 6% 80px;text-align:center;}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(79,142,247,0.25);background:rgba(79,142,247,0.07);border-radius:24px;padding:7px 18px;font-size:11px;font-weight:600;color:var(--blue);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:32px;animation:fadeUp 0.7s both;}
+.hero-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--blue);animation:blink 1.8s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.2;}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(38px,5.5vw,80px);font-weight:800;line-height:1.06;letter-spacing:-2.5px;margin-bottom:22px;animation:fadeUp 0.7s 0.08s both;}
+.hero h1 .grad{background:linear-gradient(135deg,var(--blue) 0%,var(--purple) 50%,var(--teal) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{font-size:clamp(15px,1.8vw,19px);color:var(--muted);max-width:600px;margin:0 auto 44px;line-height:1.75;animation:fadeUp 0.7s 0.16s both;}
+.hero-sub strong{color:var(--text);font-weight:600;}
+.hero-ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;animation:fadeUp 0.7s 0.24s both;}
+.cta-main{background:linear-gradient(135deg,var(--blue),var(--purple));border:none;border-radius:14px;padding:16px 36px;color:#fff;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:all 0.2s;box-shadow:0 8px 36px rgba(79,142,247,0.3);}
+.cta-main:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(79,142,247,0.4);}
+.cta-sec{border:1px solid var(--border2);border-radius:14px;padding:16px 28px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;background:transparent;}
+.cta-sec:hover{background:var(--bg3);}
+.price-pill{display:inline-flex;align-items:center;gap:10px;background:rgba(46,204,143,0.08);border:1px solid rgba(46,204,143,0.2);border-radius:24px;padding:8px 18px;font-size:13px;font-weight:600;color:var(--green);margin-top:28px;animation:fadeUp 0.7s 0.32s both;}
+.price-pill .old{text-decoration:line-through;color:var(--muted);font-weight:400;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);}}
+
+/* mock screen */
+.hero-screen{margin:60px auto 0;max-width:1100px;position:relative;animation:fadeUp 0.9s 0.4s both;}
+.screen-glow{position:absolute;inset:-40px;background:radial-gradient(ellipse at 50% 50%,rgba(79,142,247,0.12) 0%,transparent 65%);pointer-events:none;z-index:0;border-radius:40px;}
+.screen-wrap{position:relative;z-index:1;border-radius:16px;overflow:hidden;border:1px solid var(--border2);box-shadow:0 40px 120px rgba(0,0,0,0.7);}
+.screen-bar{background:rgba(12,14,21,0.98);padding:11px 16px;display:flex;align-items:center;gap:7px;border-bottom:1px solid var(--border);}
+.dot{width:10px;height:10px;border-radius:50%;}
+.dot-r{background:#f04f5a;}.dot-y{background:#f5a623;}.dot-g{background:#2ecc8f;}
+.url-bar{background:var(--bg4);border-radius:5px;padding:4px 14px;font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-left:10px;}
+/* fake dashboard */
+.fake-dash{background:var(--bg2);padding:24px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.fd-card{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px;}
+.fd-lbl{font-size:10px;color:var(--muted);margin-bottom:6px;}
+.fd-val{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;letter-spacing:-1px;}
+.fd-val.blue{background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.fd-val.green{color:var(--green);}
+.fd-val.red{color:var(--red);}
+.fd-val.amber{color:var(--amber);}
+.fd-chart-row{grid-column:1/-1;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px;height:100px;display:flex;align-items:flex-end;gap:6px;}
+.fd-bar{flex:1;border-radius:4px 4px 0 0;opacity:0.8;}
+@media(max-width:600px){.fake-dash{grid-template-columns:1fr 1fr;}.fd-chart-row{height:60px;}}
+
+/* stats */
+.stats{padding:64px 6%;}
+.stats-inner{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+.stat-item{background:var(--bg2);padding:32px 28px;text-align:center;}
+.stat-num{font-family:'Syne',sans-serif;font-size:40px;font-weight:800;line-height:1;letter-spacing:-2px;background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.stat-lbl{font-size:12px;color:var(--muted);margin-top:6px;font-weight:500;}
+@media(max-width:700px){.stats-inner{grid-template-columns:1fr 1fr;}}
+
+/* modules */
+.modules{padding:80px 6%;}
+.sec-header{text-align:center;margin-bottom:48px;}
+.tag{display:inline-block;border-radius:20px;padding:5px 14px;font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:14px;}
+.tag-blue{background:rgba(79,142,247,0.1);border:1px solid rgba(79,142,247,0.2);color:var(--blue);}
+.sec-title{font-family:'Syne',sans-serif;font-size:clamp(26px,3.5vw,46px);font-weight:800;letter-spacing:-1.5px;line-height:1.12;margin-bottom:12px;}
+.sec-sub{font-size:15px;color:var(--muted);max-width:500px;margin:0 auto;line-height:1.75;}
+.mods-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:1160px;margin:0 auto;}
+.mod{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:22px;transition:all 0.22s;}
+.mod:hover{border-color:rgba(79,142,247,0.25);background:var(--bg3);transform:translateY(-2px);}
+.mod-icon{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:12px;}
+.mod-title{font-size:13px;font-weight:700;margin-bottom:5px;}
+.mod-desc{font-size:11px;color:var(--muted);line-height:1.55;}
+@media(max-width:800px){.mods-grid{grid-template-columns:1fr 1fr;}}
+
+/* pricing */
+.pricing{padding:80px 6%;text-align:center;}
+.price-card{max-width:540px;margin:48px auto 0;background:var(--bg2);border-radius:24px;overflow:hidden;}
+.price-top{background:linear-gradient(135deg,rgba(79,142,247,0.08),rgba(123,94,245,0.08));border:1px solid rgba(79,142,247,0.2);border-bottom:none;border-radius:24px 24px 0 0;padding:40px 40px 28px;}
+.price-bot{background:var(--bg2);border:1px solid rgba(79,142,247,0.2);border-top:none;border-radius:0 0 24px 24px;padding:24px 40px 32px;}
+.price-hot{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--amber),var(--red));color:#fff;font-size:11px;font-weight:700;border-radius:20px;padding:4px 12px;margin-bottom:18px;}
+.price-old{font-size:18px;color:var(--muted);text-decoration:line-through;margin-bottom:4px;}
+.price-val{font-family:'Syne',sans-serif;font-size:76px;font-weight:800;letter-spacing:-4px;line-height:1;background:linear-gradient(135deg,var(--green),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.price-val sup{font-size:28px;letter-spacing:0;vertical-align:super;}
+.price-note{font-size:13px;color:var(--muted);margin-top:6px;}
+.price-feats{display:flex;flex-direction:column;gap:10px;margin-bottom:24px;text-align:left;}
+.pf{display:flex;align-items:center;gap:10px;font-size:13px;}
+.pf-check{width:21px;height:21px;border-radius:6px;background:rgba(46,204,143,0.12);border:1px solid rgba(46,204,143,0.25);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--green);flex-shrink:0;}
+.btn-purchase{display:block;width:100%;background:linear-gradient(135deg,var(--green),var(--teal));border:none;border-radius:13px;padding:17px;color:#041a10;font-family:'DM Sans',sans-serif;font-size:17px;font-weight:800;cursor:pointer;text-align:center;transition:all 0.2s;box-shadow:0 8px 36px rgba(46,204,143,0.28);margin-bottom:12px;}
+.btn-purchase:hover{transform:translateY(-2px);box-shadow:0 16px 48px rgba(46,204,143,0.38);}
+.price-delivery{font-size:11px;color:var(--muted2);}
+
+/* faq */
+.faq{padding:80px 6%;}
+.faq-list{max-width:720px;margin:40px auto 0;display:flex;flex-direction:column;gap:8px;}
+.faq-item{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.faq-q{padding:18px 20px;font-size:14px;font-weight:600;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background 0.2s;user-select:none;}
+.faq-q:hover{background:var(--bg3);}
+.faq-q .arr{font-size:12px;color:var(--muted);transition:transform 0.3s;}
+.faq-item.open .faq-q .arr{transform:rotate(180deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height 0.35s ease,padding 0.2s;font-size:13px;color:var(--muted);line-height:1.7;}
+.faq-item.open .faq-a{max-height:200px;padding:0 20px 18px;}
+
+/* final cta */
+.final-cta{padding:80px 6%;}
+.final-box{max-width:820px;margin:0 auto;background:var(--bg2);border:1px solid var(--border2);border-radius:28px;padding:72px 60px;text-align:center;position:relative;overflow:hidden;}
+.final-box::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(79,142,247,0.07),transparent 60%);pointer-events:none;}
+.final-box h2{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,48px);font-weight:800;letter-spacing:-2px;line-height:1.1;margin-bottom:16px;}
+.final-box p{font-size:16px;color:var(--muted);max-width:480px;margin:0 auto 36px;line-height:1.7;}
+@media(max-width:600px){.final-box{padding:40px 24px;}}
+
+footer{border-top:1px solid var(--border);padding:28px 6%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.footer-txt{font-size:12px;color:var(--muted2);}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(36px);transition:opacity 0.75s ease,transform 0.75s ease;}
+.reveal.up{opacity:1;transform:translateY(0);}
+
+/* ══════════════════════════
+   MODAL DE AUTH
+══════════════════════════ */
+.modal-overlay{display:none;position:fixed;inset:0;z-index:500;background:rgba(6,7,9,0.85);backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:16px;}
+.modal-overlay.open{display:flex;animation:fadeIn 0.2s ease;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:24px;width:100%;max-width:420px;padding:36px;position:relative;animation:slideUp 0.3s cubic-bezier(0.175,0.885,0.32,1.275) both;}
+@keyframes slideUp{from{transform:translateY(40px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.modal-close{position:absolute;top:16px;right:16px;background:var(--bg4);border:none;width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);font-size:16px;transition:all 0.2s;}
+.modal-close:hover{background:var(--bg3);color:var(--text);}
+.modal-logo{display:flex;align-items:center;gap:10px;margin-bottom:24px;}
+.modal-logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--blue),var(--purple));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.modal-logo-name{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;}
+.modal-logo-name span{color:var(--blue);}
+.modal-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;letter-spacing:-0.8px;margin-bottom:6px;}
+.modal-sub{font-size:13px;color:var(--muted);margin-bottom:28px;line-height:1.6;}
+.modal-sub strong{color:var(--green);}
+
+/* tabs */
+.auth-tabs{display:grid;grid-template-columns:1fr 1fr;background:var(--bg3);border-radius:12px;padding:4px;margin-bottom:24px;gap:4px;}
+.auth-tab{border:none;background:transparent;border-radius:9px;padding:10px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all 0.2s;}
+.auth-tab.active{background:var(--bg4);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,0.3);}
+
+/* form */
+.auth-form{display:flex;flex-direction:column;gap:14px;}
+.af-group{display:flex;flex-direction:column;gap:5px;}
+.af-group label{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;}
+.af-input-wrap{position:relative;}
+.af-input-wrap .ico{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none;}
+.af-group input{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:12px 14px 12px 40px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:all 0.2s;width:100%;}
+.af-group input::placeholder{color:var(--muted2);}
+.af-group input:focus{border-color:rgba(79,142,247,0.5);background:var(--bg4);box-shadow:0 0 0 3px rgba(79,142,247,0.08);}
+.af-group input.error{border-color:var(--red);box-shadow:0 0 0 3px rgba(240,79,90,0.08);}
+.af-err{font-size:11px;color:var(--red);display:none;}
+.af-err.show{display:block;}
+
+.btn-auth{width:100%;background:linear-gradient(135deg,var(--blue),var(--purple));border:none;border-radius:12px;padding:15px;color:#fff;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all 0.2s;box-shadow:0 6px 28px rgba(79,142,247,0.28);margin-top:4px;position:relative;}
+.btn-auth:hover{transform:translateY(-1px);box-shadow:0 10px 36px rgba(79,142,247,0.36);}
+.btn-auth:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
+.btn-auth .spin{display:none;width:18px;height:18px;border:2px solid rgba(255,255,255,0.3);border-top:2px solid #fff;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto;}
+.btn-auth.loading .btxt{display:none;}
+.btn-auth.loading .spin{display:block;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+.auth-divider{display:flex;align-items:center;gap:12px;margin:4px 0;}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border2);}
+.auth-divider span{font-size:11px;color:var(--muted);}
+
+.btn-google{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:13px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:10px;}
+.btn-google:hover{background:var(--bg4);}
+.g-icon{width:18px;height:18px;}
+
+.auth-switch{text-align:center;margin-top:6px;font-size:12px;color:var(--muted);}
+.auth-switch a{color:var(--blue);text-decoration:none;font-weight:600;cursor:pointer;}
+.auth-switch a:hover{text-decoration:underline;}
+
+/* success state inside modal */
+.auth-success{display:none;text-align:center;padding:10px 0;}
+.auth-success.show{display:block;}
+.auth-success-icon{width:64px;height:64px;background:linear-gradient(135deg,var(--green),var(--teal));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 16px;animation:popIn 0.5s cubic-bezier(0.175,0.885,0.32,1.275) both;}
+@keyframes popIn{from{transform:scale(0);}to{transform:scale(1);}}
+.auth-success h3{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-bottom:8px;}
+.auth-success p{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px;}
+.btn-continue{display:block;width:100%;background:linear-gradient(135deg,var(--green),var(--teal));border:none;border-radius:12px;padding:15px;color:#041a10;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all 0.2s;box-shadow:0 6px 24px rgba(46,204,143,0.28);}
+.btn-continue:hover{transform:translateY(-1px);}
+
+/* ══════════════════════════
+   MINHAS COMPRAS PAGE
+══════════════════════════ */
+
+
+/* Empty state */
+
+/* Product card */
+.pd-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:5px;}
+.pd-value{font-size:13px;font-weight:600;}
+.pd-value.green{color:var(--green);}
+
+/* chave ativação */
+.btn-copy{background:rgba(79,142,247,0.1);border:1px solid rgba(79,142,247,0.25);color:var(--blue);border-radius:7px;padding:6px 12px;font-size:11px;font-weight:600;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+.btn-copy:hover{background:rgba(79,142,247,0.2);}
+
+/* passo a passo dentro de minhas compras */
+
+/* support */
+
+/* toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--bg3);border:1px solid rgba(46,204,143,0.4);border-radius:10px;padding:11px 18px;font-size:13px;font-weight:600;color:var(--green);z-index:999;transition:transform 0.3s;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,0.4);pointer-events:none;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<!-- ═══════════ NAV ═══════════ -->
+<nav id="main-nav">
+  <div class="nav-brand" onclick="showLanding()">
+    <div class="nav-icon">💎</div>
+    <div class="nav-name">Finance<span>OS</span> Pro</div>
+  </div>
+  <!-- Visitante -->
+  <div class="nav-actions" id="nav-guest">
+    <button class="nav-login" onclick="openModal('login')">Entrar</button>
+    <button class="nav-buy" onclick="openModal('register')">Comprar por R$197 →</button>
+  </div>
+  <!-- Logado -->
+  <div class="nav-user" id="nav-logged">
+    <div class="nav-avatar" id="nav-av" title="Perfil">U</div>
+    <span class="nav-user-name" id="nav-uname"></span>
+    <button class="nav-sair" onclick="logout()">Sair</button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════
+     PAGE: LANDING
+═══════════════════════════════════ -->
+<div class="page active" id="page-landing">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-tag">💎 Painel Financeiro Profissional</div>
+    <h1>O controle financeiro<br>que sua empresa <span class="grad">merecia ter</span></h1>
+    <p class="hero-sub">Pare de perder dinheiro por falta de visibilidade. O FinanceOS Pro coloca suas finanças em ordem com <strong>IA integrada</strong>, relatórios automáticos e tudo que um gestor precisa — em um único arquivo.</p>
+    <div class="hero-ctas">
+      <button class="cta-main" onclick="openModal('register')">Quero o FinanceOS Pro →</button>
+      <button class="cta-sec" onclick="scrollTo({top:document.getElementById('sec-modulos').offsetTop-70,behavior:'smooth'})">Ver funcionalidades</button>
+    </div>
+    <div class="price-pill">
+      <span>🔥 Oferta limitada</span>
+      <span class="old">R$ 497</span>
+      <span>→</span>
+      <strong>R$ 197 · Acesso vitalício</strong>
+    </div>
+
+    <!-- fake dashboard preview -->
+    <div class="hero-screen">
+      <div class="screen-glow"></div>
+      <div class="screen-wrap">
+        <div class="screen-bar">
+          <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+          <div class="url-bar">financeos.pro/dashboard</div>
+        </div>
+        <div class="fake-dash">
+          <div class="fd-card"><div class="fd-lbl">Receita mensal</div><div class="fd-val blue">R$ 47.280</div></div>
+          <div class="fd-card"><div class="fd-lbl">Lucro líquido</div><div class="fd-val green">R$ 18.440</div></div>
+          <div class="fd-card"><div class="fd-lbl">Despesas</div><div class="fd-val red">R$ 28.840</div></div>
+          <div class="fd-card"><div class="fd-lbl">Impostos est.</div><div class="fd-val amber">R$ 4.220</div></div>
+          <div class="fd-chart-row">
+            <div class="fd-bar" style="height:55%;background:var(--blue)"></div>
+            <div class="fd-bar" style="height:72%;background:var(--purple)"></div>
+            <div class="fd-bar" style="height:45%;background:var(--teal)"></div>
+            <div class="fd-bar" style="height:88%;background:var(--blue)"></div>
+            <div class="fd-bar" style="height:65%;background:var(--purple)"></div>
+            <div class="fd-bar" style="height:92%;background:var(--green)"></div>
+            <div class="fd-bar" style="height:78%;background:var(--blue)"></div>
+            <div class="fd-bar" style="height:60%;background:var(--teal)"></div>
+            <div class="fd-bar" style="height:95%;background:var(--blue)"></div>
+            <div class="fd-bar" style="height:70%;background:var(--purple)"></div>
+            <div class="fd-bar" style="height:83%;background:var(--green)"></div>
+            <div class="fd-bar" style="height:76%;background:var(--blue)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats reveal">
+    <div class="stats-inner">
+      <div class="stat-item"><div class="stat-num">1.200+</div><div class="stat-lbl">Clientes ativos</div></div>
+      <div class="stat-item"><div class="stat-num">8</div><div class="stat-lbl">Tipos de gráficos</div></div>
+      <div class="stat-item"><div class="stat-num">R$197</div><div class="stat-lbl">Acesso vitalício</div></div>
+      <div class="stat-item"><div class="stat-num">4.9★</div><div class="stat-lbl">Avaliação média</div></div>
+    </div>
+  </section>
+
+  <!-- MÓDULOS -->
+  <section class="modules reveal" id="sec-modulos">
+    <div class="sec-header">
+      <div class="tag tag-blue">Funcionalidades</div>
+      <h2 class="sec-title">Tudo que você precisa, em um arquivo</h2>
+      <p class="sec-sub">Sem mensalidade. Sem servidor. 100% no seu computador.</p>
+    </div>
+    <div class="mods-grid">
+      <div class="mod"><div class="mod-icon" style="background:rgba(79,142,247,0.12)">📊</div><div class="mod-title">8 tipos de gráficos</div><div class="mod-desc">Barras, linhas, pizza, área e mais. Visualize tudo em segundos.</div></div>
+      <div class="mod"><div class="mod-icon" style="background:rgba(123,94,245,0.12)">🤖</div><div class="mod-title">IA financeira</div><div class="mod-desc">Pergunte em linguagem natural. A IA analisa e responde com insights.</div></div>
+      <div class="mod"><div class="mod-icon" style="background:rgba(46,204,143,0.12)">🧾</div><div class="mod-title">Impostos automáticos</div><div class="mod-desc">Cálculo automático para MEI, Simples Nacional e Lucro Presumido.</div></div>
+      <div class="mod"><div class="mod-icon" style="background:rgba(34,211,238,0.12)">📦</div><div class="mod-title">Controle de estoque</div><div class="mod-desc">Entradas, saídas, alertas de estoque mínimo integrados.</div></div>
+      <div class="mod"><div class="mod-icon" style="background:rgba(245,166,35,0.12)">💳</div><div class="mod-title">Contas a pagar/receber</div><div class="mod-desc">Fluxo de caixa com vencimentos e alertas automáticos.</div></div>
+      <div class="mod"><div class="mod-icon" style="background:rgba(240,79,90,0.12)">📱</div><div class="mod-title">PWA — vira app</div><div class="mod-desc">Instale na tela inicial do celular e use como app nativo offline.</div></div>
+      <div class="mod"><div class="mod-icon" style="background:rgba(79,142,247,0.12)">🔒</div><div class="mod-title">100% privado</div><div class="mod-desc">Dados ficam no seu computador. Zero servidor externo.</div></div>
+      <div class="mod"><div class="mod-icon" style="background:rgba(46,204,143,0.12)">♾️</div><div class="mod-title">Atualizações vitalícias</div><div class="mod-desc">Pague uma vez, receba todas as atualizações futuras grátis.</div></div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing reveal" id="sec-preco">
+    <div class="tag tag-blue">Preço</div>
+    <h2 class="sec-title">Um preço justo, para sempre</h2>
+    <div class="price-card">
+      <div class="price-top">
+        <div class="price-hot">🔥 Oferta por tempo limitado</div>
+        <div class="price-old">De R$ 497,00</div>
+        <div class="price-val"><sup>R$</sup>197</div>
+        <div class="price-note">pagamento único · sem mensalidade</div>
+      </div>
+      <div class="price-bot">
+        <div class="price-feats">
+          <div class="pf"><div class="pf-check">✓</div> Dashboard completo (arquivo HTML)</div>
+          <div class="pf"><div class="pf-check">✓</div> IA financeira integrada</div>
+          <div class="pf"><div class="pf-check">✓</div> 8 tipos de gráficos interativos</div>
+          <div class="pf"><div class="pf-check">✓</div> Módulo de impostos automáticos</div>
+          <div class="pf"><div class="pf-check">✓</div> Controle de estoque completo</div>
+          <div class="pf"><div class="pf-check">✓</div> Atualizações vitalícias gratuitas</div>
+          <div class="pf"><div class="pf-check">✓</div> Suporte via WhatsApp</div>
+        </div>
+        <button class="btn-purchase" onclick="openModal('register')">🚀 Quero o FinanceOS Pro agora</button>
+        <p class="price-delivery">🔒 Garantia de 7 dias · Acesso imediato após pagamento</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq reveal">
+    <div style="text-align:center;margin-bottom:40px">
+      <div class="tag tag-blue">Dúvidas</div>
+      <h2 class="sec-title">Respondemos tudo</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q" onclick="faq(this)">Precisa instalar algum programa? <span class="arr">▼</span></div>
+        <div class="faq-a">Não. O FinanceOS Pro é um único arquivo HTML que você abre diretamente no Chrome ou Edge. Nenhuma instalação, nenhum servidor.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="faq(this)">Meus dados ficam seguros? <span class="arr">▼</span></div>
+        <div class="faq-a">100%. Seus dados ficam no localStorage do seu navegador. Nenhum dado é enviado para servidores externos. Controle total é seu.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="faq(this)">Funciona no celular? <span class="arr">▼</span></div>
+        <div class="faq-a">Sim! Suporte a PWA — instale como app na tela inicial (Android ou iPhone) e use offline como qualquer aplicativo nativo.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="faq(this)">Como funciona o acesso após a compra? <span class="arr">▼</span></div>
+        <div class="faq-a">Você cria sua conta aqui no site, vai para o checkout da Hubla para pagar, e após a confirmação o arquivo do dashboard é liberado para download direto no site, junto com a chave de ativação.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="faq(this)">Tem suporte se eu tiver dúvidas? <span class="arr">▼</span></div>
+        <div class="faq-a">Sim! Suporte direto via WhatsApp com o Cauã, criador do produto. Resposta em até 1 hora em dias úteis.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final-cta reveal">
+    <div class="final-box">
+      <span style="font-size:52px;display:block;margin-bottom:20px">🚀</span>
+      <h2>Pronto para <span style="background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">transformar</span> sua gestão?</h2>
+      <p>Comece hoje. Suas finanças na palma da mão em menos de 5 minutos.</p>
+      <button class="cta-main" onclick="openModal('register')">Criar conta e comprar →</button>
+    </div>
+  </section>
+
+  <footer>
+    <div class="nav-brand" style="pointer-events:none">
+      <div class="nav-icon" style="width:28px;height:28px;font-size:14px">💎</div>
+      <div class="nav-name" style="font-size:14px">Finance<span>OS</span> Pro</div>
+    </div>
+    <div class="footer-txt">© 2025 FinanceFlow Developers · Criado por Cauã Petry</div>
+    <div class="footer-txt">Todos os direitos reservados</div>
+  </footer>
+
+</div><!-- /page-landing -->
+
+<!-- ═══════════════════════════════════
+     MODAL: AUTH (LOGIN / CADASTRO)
+═══════════════════════════════════ -->
+<div class="modal-overlay" id="modal-overlay" onclick="overlayClick(event)">
+  <div class="modal" id="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-logo">
+      <div class="modal-logo-icon">💎</div>
+      <div class="modal-logo-name">Finance<span>OS</span> Pro</div>
+    </div>
+    <div id="modal-content">
+
+      <!-- Tabs -->
+      <div class="auth-tabs" id="auth-tabs">
+        <button class="auth-tab active" id="tab-reg" onclick="switchTab('register')">Criar conta</button>
+        <button class="auth-tab" id="tab-log" onclick="switchTab('login')">Entrar</button>
+      </div>
+
+      <!-- CADASTRO -->
+      <div id="form-register">
+        <div class="modal-title">Criar sua conta</div>
+        <div class="modal-sub">Crie uma conta grátis e depois finalize sua compra via <strong>Hubla</strong>.</div>
+        <div class="auth-form">
+          <div class="af-group">
+            <label>Nome completo</label>
+            <div class="af-input-wrap"><span class="ico">👤</span><input type="text" id="reg-nome" placeholder="João da Silva"></div>
+            <span class="af-err" id="err-reg-nome">Digite seu nome completo.</span>
+          </div>
+          <div class="af-group">
+            <label>E-mail</label>
+            <div class="af-input-wrap"><span class="ico">✉️</span><input type="email" id="reg-email" placeholder="joao@email.com"></div>
+            <span class="af-err" id="err-reg-email">E-mail inválido.</span>
+          </div>
+          <div class="af-group">
+            <label>Senha</label>
+            <div class="af-input-wrap"><span class="ico">🔒</span><input type="password" id="reg-senha" placeholder="Mínimo 6 caracteres"></div>
+            <span class="af-err" id="err-reg-senha">Senha deve ter ao menos 6 caracteres.</span>
+          </div>
+          <button class="btn-auth" id="btn-reg" onclick="doRegister()">
+            <span class="btxt">Criar conta grátis →</span>
+            <div class="spin"></div>
+          </button>
+        </div>
+        <div class="auth-switch">Já tem conta? <a onclick="switchTab('login')">Entrar</a></div>
+      </div>
+
+      <!-- LOGIN -->
+      <div id="form-login" style="display:none">
+        <div class="modal-title">Bem-vindo de volta!</div>
+        <div class="modal-sub">Entre na sua conta para baixar o dashboard.</div>
+        <div class="auth-form">
+          <div class="af-group">
+            <label>E-mail</label>
+            <div class="af-input-wrap"><span class="ico">✉️</span><input type="email" id="log-email" placeholder="joao@email.com"></div>
+            <span class="af-err" id="err-log-email">E-mail inválido.</span>
+          </div>
+          <div class="af-group">
+            <label>Senha</label>
+            <div class="af-input-wrap"><span class="ico">🔒</span><input type="password" id="log-senha" placeholder="Sua senha"></div>
+            <span class="af-err" id="err-log-senha">Senha incorreta.</span>
+          </div>
+          <button class="btn-auth" id="btn-log" onclick="doLogin()">
+            <span class="btxt">Entrar →</span>
+            <div class="spin"></div>
+          </button>
+        </div>
+        <div class="auth-switch">Não tem conta? <a onclick="switchTab('register')">Criar grátis</a></div>
+      </div>
+
+      <!-- SUCESSO CADASTRO → Ir para Hubla -->
+      <div class="auth-success" id="auth-success">
+        <div class="auth-success-icon">✓</div>
+        <h3>Conta criada!</h3>
+        <p>Agora finalize sua compra na <strong>Hubla</strong>. Após o pagamento você receberá o arquivo do dashboard por e-mail com a chave de acesso.</p>
+        <button class="btn-continue" onclick="goToHubla()">Ir para o pagamento na Hubla →</button>
+      </div>
+
+      <!-- TELA DE DOWNLOAD (após compra confirmada) -->
+      <div class="auth-success" id="screen-download" style="display:none">
+        <div class="auth-success-icon" style="background:linear-gradient(135deg,#4f8ef7,#7b5ef5)">⬇️</div>
+        <h3>Seu download está pronto!</h3>
+        <p>Clique no botão abaixo para baixar o <strong>FinanceOS Pro</strong>. Salve o arquivo no seu computador e abra no Chrome ou Edge.</p>
+        <a class="btn-continue" href="financeos_dashboard_v3.html" download="FinanceOS-Pro.html" style="text-decoration:none;display:block">
+          ⬇️ Baixar FinanceOS Pro (.html)
+        </a>
+        <div style="margin-top:14px;background:rgba(79,142,247,0.08);border:1px solid rgba(79,142,247,0.18);border-radius:10px;padding:12px 14px;text-align:left">
+          <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px">🔑 Sua chave de ativação</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span id="dl-act-key" style="font-family:'DM Mono',monospace;font-size:14px;color:var(--blue);flex:1">FNOS-2025-PRO1</span>
+            <button onclick="copyDlKey()" style="background:rgba(79,142,247,0.12);border:1px solid rgba(79,142,247,0.25);color:var(--blue);border-radius:7px;padding:5px 11px;font-size:11px;font-weight:600;cursor:pointer">Copiar</button>
+          </div>
+          <div style="font-size:11px;color:var(--muted);margin-top:7px">Digite essa chave na primeira abertura do dashboard para ativar.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Storage ──────────────────────────────────
+function getUsers(){try{return JSON.parse(localStorage.getItem('fnos_users')||'{}');}catch(e){return{};}}
+function saveUsers(u){localStorage.setItem('fnos_users',JSON.stringify(u));}
+function getCurrentUser(){try{return JSON.parse(localStorage.getItem('fnos_current')||'null');}catch(e){return null;}}
+function setCurrentUser(u){u?localStorage.setItem('fnos_current',JSON.stringify(u)):localStorage.removeItem('fnos_current');}
+
+const HUBLA_URL='https://pay.hub.la/SEU_PRODUTO_AQUI';
+
+// ── Init ──────────────────────────────────
+window.addEventListener('DOMContentLoaded',()=>{
+  const user=getCurrentUser();
+  if(user) updateNavLogged(user);
+  else updateNavGuest();
+});
+
+// ── Nav ──────────────────────────────────
+function updateNavLogged(user){
+  document.getElementById('nav-guest').style.display='none';
+  const nl=document.getElementById('nav-logged');
+  nl.style.display='flex';
+  document.getElementById('nav-uname').textContent=user.nome.split(' ')[0];
+  document.getElementById('nav-av').textContent=user.nome[0].toUpperCase();
+}
+function updateNavGuest(){
+  document.getElementById('nav-guest').style.display='flex';
+  document.getElementById('nav-logged').style.display='none';
+}
+function logout(){
+  setCurrentUser(null);
+  updateNavGuest();
+  toast('👋 Você saiu da conta.');
+}
+
+// ── Modal core ────────────────────────────────────────────────
+function _modalShow(){
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+function overlayClick(e){
+  if(e.target===document.getElementById('modal-overlay')) closeModal();
+}
+
+// Mostra apenas o painel desejado, esconde o resto
+function _showPanel(id){
+  ['form-register','form-login','auth-success','screen-download','auth-tabs'].forEach(p=>{
+    const el=document.getElementById(p);
+    if(!el) return;
+    el.style.display='none';
+    el.classList.remove('show');
+  });
+  const target=document.getElementById(id);
+  if(target){ target.style.display='block'; target.classList.add('show'); }
+  // tabs visíveis só nos formulários
+  if(id==='form-register'||id==='form-login'){
+    const tabs=document.getElementById('auth-tabs');
+    if(tabs) tabs.style.display='grid';
+  }
+}
+
+function switchTab(tab){
+  document.getElementById('tab-reg').classList.toggle('active', tab==='register');
+  document.getElementById('tab-log').classList.toggle('active', tab==='login');
+  _showPanel(tab==='register' ? 'form-register' : 'form-login');
+  // limpa erros ao trocar aba
+  document.querySelectorAll('.af-err').forEach(e=>e.classList.remove('show'));
+  document.querySelectorAll('.af-group input').forEach(i=>i.classList.remove('error'));
+}
+
+// Abre o modal no estado certo
+function openModal(tab){
+  // Limpa inputs
+  ['reg-nome','reg-email','reg-senha','log-email','log-senha'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.value='';
+  });
+  document.querySelectorAll('.af-err').forEach(e=>e.classList.remove('show'));
+  document.querySelectorAll('.af-group input').forEach(i=>i.classList.remove('error'));
+
+  const user=getCurrentUser();
+
+  // Usuário logado e já comprou → tela de download direto
+  if(user && user.comprou){
+    _showPanel('screen-download');
+    _modalShow();
+    return;
+  }
+
+  // Usuário logado mas não comprou → botão ir para Hubla
+  if(user && !user.comprou){
+    _showPanel('auth-success');
+    _modalShow();
+    return;
+  }
+
+  // Visitante → formulário
+  const t = (tab==='login') ? 'login' : 'register';
+  document.getElementById('tab-reg').classList.toggle('active', t==='register');
+  document.getElementById('tab-log').classList.toggle('active', t==='login');
+  _showPanel(t==='login' ? 'form-login' : 'form-register');
+  const tabs=document.getElementById('auth-tabs');
+  if(tabs) tabs.style.display='grid';
+  _modalShow();
+}
+
+// ── Register ─────────────────────────────────────────────────
+function doRegister(){
+  const nome  = document.getElementById('reg-nome').value.trim();
+  const email = document.getElementById('reg-email').value.trim().toLowerCase();
+  const senha = document.getElementById('reg-senha').value;
+
+  document.querySelectorAll('.af-err').forEach(e=>e.classList.remove('show'));
+  document.querySelectorAll('.af-group input').forEach(i=>i.classList.remove('error'));
+
+  let ok=true;
+  if(nome.length<3)                          { showErr('err-reg-nome','reg-nome');  ok=false; }
+  if(!email.includes('@')||email.length<5)   { showErr('err-reg-email','reg-email');ok=false; }
+  if(senha.length<6)                         { showErr('err-reg-senha','reg-senha');ok=false; }
+  if(!ok) return;
+
+  const btn=document.getElementById('btn-reg');
+  btn.classList.add('loading'); btn.disabled=true;
+
+  setTimeout(()=>{
+    btn.classList.remove('loading'); btn.disabled=false;
+    const users=getUsers();
+    if(users[email]){
+      document.getElementById('err-reg-email').textContent='E-mail já cadastrado. Faça login.';
+      showErr('err-reg-email','reg-email');
+      return;
+    }
+    const user={nome, email, senha, comprou:false};
+    users[email]=user;
+    saveUsers(users);
+    setCurrentUser(user);
+    updateNavLogged(user);
+    // Mostra tela "ir para Hubla"
+    _showPanel('auth-success');
+  }, 1000);
+}
+
+// ── Login ─────────────────────────────────────────────────────
+function doLogin(){
+  const email = document.getElementById('log-email').value.trim().toLowerCase();
+  const senha = document.getElementById('log-senha').value;
+
+  document.querySelectorAll('.af-err').forEach(e=>e.classList.remove('show'));
+  document.querySelectorAll('.af-group input').forEach(i=>i.classList.remove('error'));
+
+  let ok=true;
+  if(!email.includes('@'))  { showErr('err-log-email','log-email'); ok=false; }
+  if(senha.length<1)        { showErr('err-log-senha','log-senha'); ok=false; }
+  if(!ok) return;
+
+  const btn=document.getElementById('btn-log');
+  btn.classList.add('loading'); btn.disabled=true;
+
+  setTimeout(()=>{
+    btn.classList.remove('loading'); btn.disabled=false;
+    const users=getUsers();
+    const user=users[email];
+
+    if(!user || user.senha!==senha){
+      document.getElementById('err-log-senha').textContent='E-mail ou senha incorretos.';
+      showErr('err-log-senha','log-senha');
+      return;
+    }
+
+    setCurrentUser(user);
+    updateNavLogged(user);
+
+    if(user.comprou){
+      // Já comprou → mostra download direto no modal
+      _showPanel('screen-download');
+    } else {
+      // Ainda não comprou → fecha modal, avisa
+      closeModal();
+      toast('✓ Olá, '+user.nome.split(' ')[0]+'! Clique em "Comprar" para adquirir o produto.');
+    }
+  }, 800);
+}
+
+// ── Hubla ─────────────────────────────────────────────────────
+function goToHubla(){
+  const user=getCurrentUser();
+  if(!user) return;
+
+  // Na versão real: window.open(HUBLA_URL+'?email='+encodeURIComponent(user.email), '_blank');
+  // DEMO — simula pagamento confirmado:
+  closeModal();
+  toast('🔗 Redirecionando para a Hubla...');
+  setTimeout(()=>{
+    user.comprou=true;
+    setCurrentUser(user);
+    const users=getUsers();
+    if(users[user.email]){ users[user.email].comprou=true; saveUsers(users); }
+    updateNavLogged(user);
+    // Abre modal direto na tela de download
+    _showPanel('screen-download');
+    _modalShow();
+    toast('✅ Pagamento confirmado! Baixe o seu dashboard.');
+  }, 1500);
+}
+
+// ── Helpers ───────────────────────────────────────────────────
+function showErr(errId,inputId){
+  const e=document.getElementById(errId); if(e) e.classList.add('show');
+  const i=document.getElementById(inputId); if(i) i.classList.add('error');
+}
+function copyDlKey(){
+  navigator.clipboard.writeText('FNOS-2025-PRO1').catch(()=>{});
+  toast('✓ Chave copiada!');
+}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+function faq(btn){const item=btn.closest('.faq-item');const was=item.classList.contains('open');document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));if(!was)item.classList.add('open');}
+
+// Scroll reveal
+const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('up');io.unobserve(e.target);}});},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+window.addEventListener('scroll',()=>{document.querySelector('nav').style.background=window.scrollY>50?'rgba(6,7,9,0.96)':'rgba(6,7,9,0.75)';});
+</script>
+</body>
+</html>
