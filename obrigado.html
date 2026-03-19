@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Compra confirmada — FinanceOS Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060709;--bg2:#0c0e15;--bg3:#12151f;--bg4:#191d2b;
+  --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);
+  --text:#edf0fc;--muted:#606882;
+  --blue:#4f8ef7;--purple:#7b5ef5;--green:#2ecc8f;--teal:#22d3ee;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  overflow-x:hidden;
+}
+
+/* orbs */
+.orb{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0;}
+.orb-1{width:600px;height:600px;background:var(--green);top:-200px;left:-200px;opacity:0.07;animation:orb1 20s ease-in-out infinite alternate;}
+.orb-2{width:500px;height:500px;background:var(--blue);bottom:-200px;right:-150px;opacity:0.07;animation:orb2 25s ease-in-out infinite alternate;}
+@keyframes orb1{to{transform:translate(60px,50px);}}
+@keyframes orb2{to{transform:translate(-50px,40px);}}
+
+/* card */
+.card{
+  position:relative;z-index:1;
+  max-width:520px;width:100%;
+  background:var(--bg2);
+  border:1px solid var(--border2);
+  border-radius:28px;
+  padding:48px 40px;
+  text-align:center;
+  animation:slideUp 0.6s cubic-bezier(0.175,0.885,0.32,1.275) both;
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:translateY(0);}}
+
+/* check icon */
+.check-wrap{
+  width:80px;height:80px;
+  background:linear-gradient(135deg,var(--green),var(--teal));
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 24px;
+  font-size:36px;
+  animation:popIn 0.6s 0.3s cubic-bezier(0.175,0.885,0.32,1.275) both;
+  box-shadow:0 0 40px rgba(46,204,143,0.3);
+}
+@keyframes popIn{from{transform:scale(0);}to{transform:scale(1);}}
+
+h1{
+  font-family:'Syne',sans-serif;
+  font-size:28px;font-weight:800;
+  letter-spacing:-1px;
+  margin-bottom:10px;
+  animation:fadeUp 0.5s 0.5s both;
+}
+.subtitle{
+  font-size:15px;color:var(--muted);
+  line-height:1.7;margin-bottom:32px;
+  animation:fadeUp 0.5s 0.6s both;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+
+/* código */
+.code-box{
+  background:rgba(79,142,247,0.06);
+  border:1px solid rgba(79,142,247,0.2);
+  border-radius:16px;
+  padding:20px 24px;
+  margin-bottom:24px;
+  animation:fadeUp 0.5s 0.7s both;
+}
+.code-label{
+  font-size:10px;font-weight:700;
+  color:var(--muted);
+  text-transform:uppercase;letter-spacing:.08em;
+  margin-bottom:10px;
+}
+.code-row{display:flex;align-items:center;gap:10px;}
+.code-val{
+  font-family:'DM Mono',monospace;
+  font-size:20px;font-weight:600;
+  color:var(--blue);
+  letter-spacing:3px;
+  flex:1;text-align:left;
+}
+.btn-copy{
+  background:rgba(79,142,247,0.12);
+  border:1px solid rgba(79,142,247,0.25);
+  color:var(--blue);
+  border-radius:9px;
+  padding:8px 16px;
+  font-size:12px;font-weight:700;
+  cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+  transition:all 0.2s;
+  white-space:nowrap;
+}
+.btn-copy:hover{background:rgba(79,142,247,0.22);}
+.code-hint{font-size:11px;color:var(--muted);margin-top:10px;text-align:left;}
+
+/* botões */
+.btns{display:flex;flex-direction:column;gap:10px;animation:fadeUp 0.5s 0.8s both;}
+.btn-primary{
+  display:block;width:100%;
+  background:linear-gradient(135deg,var(--green),var(--teal));
+  border:none;border-radius:14px;
+  padding:16px;
+  color:#041a10;font-family:'DM Sans',sans-serif;
+  font-size:15px;font-weight:800;
+  cursor:pointer;text-decoration:none;
+  transition:all 0.2s;
+  box-shadow:0 8px 28px rgba(46,204,143,0.25);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(46,204,143,0.35);}
+.btn-secondary{
+  display:block;width:100%;
+  background:transparent;
+  border:1px solid var(--border2);
+  border-radius:14px;padding:14px;
+  color:var(--text);font-family:'DM Sans',sans-serif;
+  font-size:14px;font-weight:600;
+  cursor:pointer;text-decoration:none;
+  transition:all 0.2s;
+}
+.btn-secondary:hover{background:var(--bg3);}
+
+/* passos */
+.steps{
+  margin-top:32px;
+  border-top:1px solid var(--border);
+  padding-top:28px;
+  text-align:left;
+  animation:fadeUp 0.5s 0.9s both;
+}
+.steps-title{
+  font-size:11px;font-weight:700;
+  color:var(--muted);
+  text-transform:uppercase;letter-spacing:.07em;
+  margin-bottom:16px;
+}
+.step{display:flex;gap:14px;margin-bottom:14px;align-items:flex-start;}
+.step-num{
+  width:26px;height:26px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--blue),var(--purple));
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:800;
+  margin-top:1px;
+}
+.step-text{font-size:13px;color:var(--muted);line-height:1.6;}
+.step-text strong{color:var(--text);}
+
+/* footer */
+.footer{
+  margin-top:28px;
+  font-size:11px;color:var(--muted);
+  border-top:1px solid var(--border);
+  padding-top:20px;
+  animation:fadeUp 0.5s 1s both;
+}
+
+/* toast */
+.toast{
+  position:fixed;bottom:24px;left:50%;
+  transform:translateX(-50%) translateY(80px);
+  background:var(--bg3);
+  border:1px solid rgba(46,204,143,0.4);
+  border-radius:10px;padding:11px 20px;
+  font-size:13px;font-weight:600;color:var(--green);
+  z-index:999;transition:transform 0.3s;
+  white-space:nowrap;
+  box-shadow:0 8px 24px rgba(0,0,0,0.4);
+}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+@media(max-width:480px){
+  .card{padding:32px 20px;border-radius:20px;}
+  h1{font-size:24px;}
+  .code-val{font-size:16px;letter-spacing:2px;}
+}
+</style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<div class="card">
+  <div class="check-wrap">✅</div>
+  <h1>Compra confirmada!</h1>
+  <p class="subtitle">Parabéns! Seu acesso ao <strong>FinanceOS Pro</strong> está liberado. Siga os passos abaixo para começar agora.</p>
+
+  <div class="code-box">
+    <div class="code-label">🔑 Seu código de ativação</div>
+    <div class="code-row">
+      <span class="code-val" id="code">FNOS-2025-PRO1</span>
+      <button class="btn-copy" onclick="copiar()" id="btn-copy">Copiar</button>
+    </div>
+    <div class="code-hint">Use esse código na tela de ativação do painel</div>
+  </div>
+
+  <div class="btns">
+    <a class="btn-primary" href="https://financeos-mddp.vercel.app" target="_blank">
+      🚀 Acessar FinanceOS Pro
+    </a>
+    <a class="btn-secondary" href="https://financeos-mddp.vercel.app/painel.html" download="FinanceOS-Pro.html">
+      ⬇️ Baixar arquivo (.html)
+    </a>
+  </div>
+
+  <div class="steps">
+    <div class="steps-title">Como usar</div>
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text"><strong>Acesse o site</strong> clicando no botão acima e faça login com o e-mail usado na compra.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text"><strong>Cole o código</strong> de ativação acima quando o painel pedir.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text"><strong>Opcional:</strong> Baixe o arquivo para usar offline no Chrome ou Edge.</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Dúvidas? Fale com o suporte via WhatsApp · FinanceOS Pro © 2026
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+function copiar(){
+  try{ navigator.clipboard.writeText('FNOS-2025-PRO1').catch(()=>{}); }catch(e){}
+  const btn = document.getElementById('btn-copy');
+  btn.textContent = '✓ Copiado!';
+  setTimeout(()=>{ btn.textContent = 'Copiar'; }, 2000);
+  const t = document.getElementById('toast');
+  t.textContent = '✓ Código copiado!';
+  t.classList.add('show');
+  setTimeout(()=>{ t.classList.remove('show'); }, 3000);
+}
+</script>
+</body>
+</html>
